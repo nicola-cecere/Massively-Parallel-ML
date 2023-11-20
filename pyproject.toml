@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "mpml"
+version = "0.1.0"
+description = ""
+authors = ["Nicola Cecere <nicola.cecere@mail.polimi.it>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pyspark = "^3.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
