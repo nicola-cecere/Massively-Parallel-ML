@@ -7,11 +7,11 @@ def train(np_Xy, iterations, learning_rate, lambda_reg):
     y = np.array([example[-1] for example in np_Xy])   # Extract labels
 
     # Number of examples and features
-    m, n = X.shape
+    m, k = X.shape
 
     np.random.seed(0) # Added for reproducibility
     # Initializing weights and bias with random values
-    w = np.random.rand(n)
+    w = np.random.rand(k)
     b = np.random.rand()
 
     for i in range(iterations):
@@ -21,13 +21,19 @@ def train(np_Xy, iterations, learning_rate, lambda_reg):
 
         # Cost function with L2 regularization
         cost = (-1/m) * np.sum(y * np.log(predictions) + (1 - y) * np.log(1 - predictions))
-        cost += (lambda_reg / (2*m)) * np.sum(w**2)
+        cost += (lambda_reg / (2*k)) * np.sum(w**2)
 
         if i % 100 == 0:
             print(f"Iteration {i}, Cost: {cost}")
 
         # Gradient calculation
-        dw = (1/m) * np.dot(X.T, (predictions - y)) + (lambda_reg/m) * w
+        # dw = (1/m) * np.dot(X.T, (predictions - y)) + (lambda_reg/k) * w
+        # db = (1/m) * np.sum(predictions - y)
+
+        # Gradient calculation with np.sum and for loop
+        dw = np.zeros(k)
+        for j in range(k):
+            dw[j] = (1/m) * np.sum((predictions - y) * X[:, j]) + (lambda_reg/k) * w[j]
         db = (1/m) * np.sum(predictions - y)
 
         # Update weights and bias
