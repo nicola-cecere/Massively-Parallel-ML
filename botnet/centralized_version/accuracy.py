@@ -7,5 +7,5 @@ def accuracy (w, b, np_Xy):
         if(predict(w,b,element[0:11]) == element[11]):
             correctly_classified += 1
 
-    accuracy = correctly_classified/np_Xy.size
+    accuracy = correctly_classified/np_Xy.shape[0]
     return accuracy
