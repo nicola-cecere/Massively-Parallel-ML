@@ -5,7 +5,7 @@ def predict(w, b, X):
     z = 0
     for i in range(len(w)):
         z += w[i] * X[i]
-
+    z+=b
     # Apply the sigmoid function to get the probability
     p = 1 / (1 + np.exp(-z))
 
