@@ -1,8 +1,5 @@
 import os
-
 import numpy as np
-from pyspark import SparkContext
-
 
 def readFile(filename):
     current_directory = os.getcwd()

@@ -1,4 +1,3 @@
-import numpy as np
 from predict import predict
 
 def accuracy (w, b, np_Xy):
