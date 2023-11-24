@@ -8,7 +8,6 @@ def predict(w, b, X):
     z+=b
     # Apply the sigmoid function to get the probability
     p = 1 / (1 + np.exp(-z))
-
     # Predict the class label (0 or 1) based on the probability
     if p >= 0.5:
         return 1

@@ -18,26 +18,23 @@ def train(np_Xy, iterations, learning_rate, lambda_reg):
 
         # Compute predictions
         z = np.dot(X, w) + b
-        predictions = 1 / (1 + np.exp(-z))  # Applying the sigmoid function
-
-        # Clipping predictions to fix errors
-        predictions = np.clip(predictions, 1e-10, 1-1e-10)
+        y_hat = 1 / (1 + np.exp(-z))  # Applying the sigmoid function
 
         # Cost function with L2 regularization
-        cost = (-1/m) * np.sum(y * np.log(predictions) + (1 - y) * np.log(1 - predictions))
+        cost = (-1/m) * np.sum(y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat))
         cost += (lambda_reg / (2*k)) * np.sum(w**2)
 
         print(f"Iteration {i}, Cost: {cost}")
 
         # Gradient calculation
-        dw = (1/m) * np.dot(X.T, (predictions - y)) + (lambda_reg/k) * w
-        db = (1/m) * np.sum(predictions - y)
+        dw = (1/m) * np.dot(X.T, (y_hat - y)) + (lambda_reg/k) * w
+        db = (1/m) * np.sum(y_hat - y)
 
         # Gradient calculation with np.sum and for loop
         # dw = np.zeros(k)
         # for j in range(k):
-        #    dw[j] = (1/m) * np.sum((predictions - y) * X[:, j]) + (lambda_reg/k) * w[j]
-        # db = (1/m) * np.sum(predictions - y)
+        #    dw[j] = (1/m) * np.sum((y_hat - y) * X[:, j]) + (lambda_reg/k) * w[j]
+        # db = (1/m) * np.sum(y_hat - y)
 
         # Update weights and bias
         w -= learning_rate * dw
