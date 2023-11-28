@@ -2,7 +2,7 @@ from predict import predict
 
 from predict import predict
 
-def calculate_accuracy(w, b, RDD_xy):
+def accuracy(w, b, RDD_xy):
     prediction_results = RDD_xy.map(lambda record: 1 if predict(w, b, record[0]) == record[1] else 0)
 
     # Step 2: Use reduce to sum up the correct predictions
