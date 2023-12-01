@@ -16,6 +16,6 @@ def readFile(filename):
     sc = SparkContext.getOrCreate()
     data = sc.textFile(parent_directory + "/" + filename)
     processed_data = data.map(lambda line: line.split(",")).map(
-        lambda cols: ([float(x) for x in cols[:11]], int(cols[11]))
+        lambda cols: ([float(x) for x in cols[:11]], float(cols[11]))
     )
     return processed_data
