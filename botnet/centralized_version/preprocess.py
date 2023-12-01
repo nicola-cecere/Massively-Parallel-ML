@@ -1,5 +1,7 @@
 import os
+
 import numpy as np
+
 
 def readFile(filename):
     current_directory = os.getcwd()

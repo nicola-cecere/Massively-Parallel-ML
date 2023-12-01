@@ -1,6 +1,7 @@
 import numpy as np
-def normalize(np_Xy):
 
+
+def normalize(np_Xy):
     # Extracting features (X) and labels (y) from the input array
     X = np_Xy[:, :-1]
     y = np_Xy[:, -1].reshape(-1, 1)
@@ -17,4 +18,3 @@ def normalize(np_Xy):
     X_norm = np.hstack((X_norm, y))
 
     return X_norm
-
