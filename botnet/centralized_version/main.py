@@ -5,7 +5,7 @@ from train import train
 
 if __name__ == "__main__":
     # read data
-    data = readFile("botnet/data/botnet_tot_syn_l.csv")
+    data = readFile("data/botnet_tot_syn_l.csv")
     # standardize
     data = normalize(data)
     # train
