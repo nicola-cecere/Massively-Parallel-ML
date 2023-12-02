@@ -1,6 +1,5 @@
-import numpy as np
 from pyspark import SparkContext
-
+import numpy as np
 
 def train(RDD_Xy, iterations, learning_rate, lambda_reg):
     sc = SparkContext.getOrCreate()
