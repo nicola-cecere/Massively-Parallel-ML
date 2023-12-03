@@ -1,5 +1,6 @@
-from pyspark import SparkContext
 import numpy as np
+from pyspark import SparkContext
+
 
 def train(RDD_Xy, iterations, learning_rate, lambda_reg):
     sc = SparkContext.getOrCreate()
@@ -39,19 +40,27 @@ def train(RDD_Xy, iterations, learning_rate, lambda_reg):
     return w, b
 
 
-def compute_gradients(point, w, b, m, k, lambda_reg):
-    X, y = point
-    z = np.dot(X, w) + b
+def compute_gradients(record, w, b, m, k, lambda_reg):
+    X, y = record
+    z = 0
+    for i in range(k):
+        z += X[i] * w[i]
+    z += b
     y_hat = 1 / (1 + np.exp(-z))
-    dw = (1 / m) * np.dot(X, (y_hat - y)) + (lambda_reg / k) * w
+    dw = (1 / m) * ((y_hat - y) * X + (lambda_reg / k) * w)
     db = (1 / m) * np.sum(y_hat - y)
     return dw, db
 
 
-def compute_cost(point, w, b, m, k, lambda_reg):
-    X, y = point
-    z = np.dot(X, w) + b
+def compute_cost(record, w, b, m, k, lambda_reg):
+    X, y = record
+    z = 0
+    for i in range(k):
+        z += X[i] * w[i]
+    z += b
     y_hat = 1 / (1 + np.exp(-z))
-    cost = (-1 / m) * (y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat))
-    cost += (lambda_reg / (2 * k)) * np.sum(w**2)
+    cost = (-1 / m) * (
+        (y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat))
+        + (lambda_reg / (2 * k)) * np.sum(w**2)
+    )
     return cost
