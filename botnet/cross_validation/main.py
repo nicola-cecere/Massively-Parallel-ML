@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     num_blocks_cv = 10
     # Shuffle rows and transfrom data
-    data_cv = transform(data)
+    data_cv = transform(data, num_blocks_cv)
 
     accuracies = []
     for i in range(num_blocks_cv):
