@@ -28,12 +28,14 @@ if __name__ == "__main__":
     # Shuffle rows and transfrom data
     data_cv = transform(data)
 
+    accuracys = []
     for i in range(num_blocks_cv):
         tr_data, test_data = get_block_data(data_cv, i)
         weights, bias = train(tr_data, 10, 1.5, 0.05)
         acc = accuracy(test_data, weights, bias)
+        accuracys.append(acc)
         print("accuracy:", acc)
     avg_acc = 0
-    for a in acc:
+    for a in accuracys:
         avg_acc += a
     print("average accuracy:", avg_acc / num_blocks_cv)
