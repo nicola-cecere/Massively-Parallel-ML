@@ -1,9 +1,7 @@
-# Input RDD_xy
-# For loop and shuffle rows
-# For each x % num_blocks assign index
+import random
 
 from pyspark import SparkContext
-import random
+
 
 def transform(RDD_Xy, num_blocks):
     sc = SparkContext.getOrCreate()
@@ -18,7 +16,3 @@ def transform(RDD_Xy, num_blocks):
     # Map each record in the RDD to include a random fold index
     RDD_tranformed = RDD_Xy.map(add_index)
     return RDD_tranformed
-
-
-
-
