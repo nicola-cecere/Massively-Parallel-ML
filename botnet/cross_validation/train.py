@@ -20,47 +20,44 @@ def train(RDD_Xy, iterations, learning_rate, lambda_reg):
 
         # Compute gradients
         gradients = RDD_Xy.map(
-            lambda x: compute_gradients(
-                x, broadcast_w.value, broadcast_b.value, m, k, lambda_reg
-            )
+            lambda x: compute_gradients(x, broadcast_w.value, broadcast_b.value, m, k)
         ).reduce(lambda a, b: (a[0] + b[0], a[1] + b[1]))
 
         # Update weights and bias
-        w -= learning_rate * gradients[0]
-        b -= learning_rate * gradients[1]
+        w -= learning_rate * ((1 / m) * gradients[0] + (lambda_reg / k) * w)
+        b -= learning_rate * (
+            (1 / m) * gradients[1] + ((lambda_reg / (2 * k)) * np.sum(w**2))
+        )
 
         # Optional: Print cost for monitoring (not recommended for large datasets)
         cost = RDD_Xy.map(
-            lambda x: compute_cost(
-                x, broadcast_w.value, broadcast_b.value, m, k, lambda_reg
-            )
+            lambda x: compute_cost(x, broadcast_w.value, broadcast_b.value, m, k)
         ).reduce(lambda x, y: x + y)
+        cost = (-1 / m) * cost
+        cost += (lambda_reg / (2 * k)) * np.sum(w**2)
         print(f"Iteration {i}, Cost: {cost}")
 
     return w, b
 
 
-def compute_gradients(record, w, b, m, k, lambda_reg):
+def compute_gradients(record, w, b, m, k):
     X, y = record
     z = 0
     for i in range(k):
         z += X[i] * w[i]
     z += b
     y_hat = 1 / (1 + np.exp(-z))
-    dw = (1 / m) * ((y_hat - y) * X + (lambda_reg / k) * w)
-    db = (1 / m) * np.sum(y_hat - y)
+    dw = (y_hat - y) * X
+    db = np.sum(y_hat - y)
     return dw, db
 
 
-def compute_cost(record, w, b, m, k, lambda_reg):
+def compute_cost(record, w, b, m, k):
     X, y = record
     z = 0
     for i in range(k):
         z += X[i] * w[i]
     z += b
     y_hat = 1 / (1 + np.exp(-z))
-    cost = (-1 / m) * (
-        (y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat))
-        + (lambda_reg / (2 * k)) * np.sum(w**2)
-    )
+    cost = y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat)
     return cost
