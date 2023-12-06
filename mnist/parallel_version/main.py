@@ -1,6 +1,10 @@
+import os
+import sys
+
 import matplotlib.pyplot as plt
-from assignCluster import parallelAssign2cluster
-from kmeans import parallelKMeans
+from pyspark import SparkContext
+
+# from kmeans import parallelKMeans
 from read import parallelReadFile
 
 
@@ -23,7 +27,13 @@ def plot_centroids(centroids, image_size=(28, 28)):
 
 
 if __name__ == "__main__":
+    os.environ["PYSPARK_PYTHON"] = sys.executable
+    os.environ["PYSPARK_DRIVER_PYTHON"] = sys.executable
+
+    sc = SparkContext.getOrCreate()
+    current_directory = os.getcwd()
+    sc.addPyFile(current_directory + "/MNIST/parallel_version/" + "read.py")
     # read data
-    data = parallelReadFile("MNIST/data/tot_mnist_shuf.csv")
+    data = parallelReadFile("MNIST/data/tot_mnist_shuf_debug.csv")
     centroids = parallelKMeans(data, 10, 10)
     plot_centroids(centroids)
