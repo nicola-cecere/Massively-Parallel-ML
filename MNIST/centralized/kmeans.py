@@ -1,5 +1,5 @@
 import numpy as np
-
+from assignCluster import serialAssign2cluster
 
 def initialize_centroids(data, K):
     """
@@ -21,5 +21,8 @@ def initialize_centroids(data, K):
 def serialKMeans(X, K, n_iter):
     # Initialize centroids
     centroids = initialize_centroids(X, K)
-
+    for x in range(1,1000):
+        sample = X.iloc[x]
+        closest_centroid_index = serialAssign2cluster(sample, centroids)
+        print(f"Data point {x} is closest to centroid {closest_centroid_index}")
     return

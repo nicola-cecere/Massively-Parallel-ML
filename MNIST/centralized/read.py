@@ -1,6 +1,4 @@
 import pandas as pd
-
-
 def serialReadFile(filename):
     data = pd.read_csv(filename)
 
