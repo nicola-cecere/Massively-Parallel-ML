@@ -22,9 +22,9 @@ def initialize_centroids(data, K):
 def serialKMeans(X, K, n_iter):
     # Initialize centroids
     centroids = initialize_centroids(X, K)
-    # Initialize cluster assignment list
-    clusters = [[] for _ in range(K)]
     for _ in range(n_iter):
+        # Initialize cluster assignment list
+        clusters = [[] for _ in range(K)]
         print("Iteration: ", _)
         for index, sample in X.iterrows():
             closest_centroid_index = serialAssign2cluster(sample, centroids)
