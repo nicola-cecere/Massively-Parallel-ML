@@ -2,9 +2,8 @@ import os
 import sys
 
 import matplotlib.pyplot as plt
+from kmeans import parallelKMeans
 from pyspark import SparkContext
-
-# from kmeans import parallelKMeans
 from read import parallelReadFile
 
 
@@ -33,7 +32,9 @@ if __name__ == "__main__":
     sc = SparkContext.getOrCreate()
     current_directory = os.getcwd()
     sc.addPyFile(current_directory + "/MNIST/parallel_version/" + "read.py")
+    sc.addPyFile(current_directory + "/MNIST/parallel_version/" + "kmeans.py")
     # read data
     data = parallelReadFile("MNIST/data/tot_mnist_shuf_debug.csv")
-    centroids = parallelKMeans(data, 10, 10)
+    data_cache = data.cache()
+    centroids = parallelKMeans(data_cache, 10, 10)
     plot_centroids(centroids)
