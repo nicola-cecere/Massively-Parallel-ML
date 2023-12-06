@@ -1,6 +1,7 @@
 import numpy as np
 from assignCluster import serialAssign2cluster
 
+
 def initialize_centroids(data, K):
     """
     Initialize K centroids from a standard normal distribution.
@@ -21,8 +22,17 @@ def initialize_centroids(data, K):
 def serialKMeans(X, K, n_iter):
     # Initialize centroids
     centroids = initialize_centroids(X, K)
-    for x in range(1,1000):
-        sample = X.iloc[x]
-        closest_centroid_index = serialAssign2cluster(sample, centroids)
-        print(f"Data point {x} is closest to centroid {closest_centroid_index}")
-    return
+    # Initialize cluster assignment list
+    clusters = [[] for _ in range(K)]
+    for _ in range(n_iter):
+        print("Iteration: ", _)
+        for index, sample in X.iterrows():
+            closest_centroid_index = serialAssign2cluster(sample, centroids)
+            clusters[closest_centroid_index].append(sample)
+        # Update centroids
+        for i, cluster in enumerate(clusters):
+            if len(cluster) != 0:
+                centroids[i] = np.mean(cluster, axis=0)
+            else:
+                centroids[i] = np.random.randn(X.shape[1])
+    return centroids
