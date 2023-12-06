@@ -20,19 +20,22 @@ def initialize_centroids(data, K):
 
 
 def serialKMeans(X, K, n_iter):
+    X = X.values
     # Initialize centroids
     centroids = initialize_centroids(X, K)
     for _ in range(n_iter):
         # Initialize cluster assignment list
-        clusters = [[] for _ in range(K)]
+        clusters = {i: [] for i in range(K)}
         print("Iteration: ", _)
-        for index, sample in X.iterrows():
+        for index, sample in enumerate(X):
             closest_centroid_index = serialAssign2cluster(sample, centroids)
-            clusters[closest_centroid_index].append(sample)
+            clusters[closest_centroid_index].append(index)
+
         # Update centroids
-        for i, cluster in enumerate(clusters):
-            if len(cluster) != 0:
-                centroids[i] = np.mean(cluster, axis=0)
+        for i in range(K):
+            if clusters[i]:
+                assigned_samples = X[clusters[i]]
+                centroids[i] = np.mean(assigned_samples, axis=0)
             else:
-                centroids[i] = np.random.randn(X.shape[1])
+                centroids[i] = np.random.randn(*centroids[i].shape)
     return centroids
