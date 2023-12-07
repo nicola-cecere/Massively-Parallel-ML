@@ -1,7 +1,7 @@
 import numpy as np
 
-def parallelAssign2cluster(x, centroids):
 
+def parallelAssign2cluster(x, centroids):
     min_distance = np.inf  # Initialize the minimum distance to infinity
     closest_centroid_index = -1  # Initialize the index of the closest centroid
 
@@ -15,4 +15,4 @@ def parallelAssign2cluster(x, centroids):
             min_distance = distance
             closest_centroid_index = j
 
-    return closest_centroid_index
+    return (closest_centroid_index, (np.array(x), 1))

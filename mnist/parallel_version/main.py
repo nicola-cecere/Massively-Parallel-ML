@@ -34,7 +34,7 @@ if __name__ == "__main__":
     sc.addPyFile(current_directory + "/MNIST/parallel_version/" + "read.py")
     sc.addPyFile(current_directory + "/MNIST/parallel_version/" + "kmeans.py")
     # read data
-    data = parallelReadFile("MNIST/data/tot_mnist_shuf_debug.csv")
+    data = parallelReadFile("MNIST/data/tot_mnist_shuf.csv")
     data_cache = data.cache()
     centroids = parallelKMeans(data_cache, 10, 10)
     plot_centroids(centroids)
