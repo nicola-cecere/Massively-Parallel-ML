@@ -20,8 +20,10 @@ if __name__ == "__main__":
     data = readFile("botnet/data/botnet_tot_syn_l.csv")
     # standardize
     data = normalize(data)
+    # optimize performance
+    data_cached = data.cache()
     # train
-    weights, bias = train(data, 10, 1.5, 0.05)
+    weights, bias = train(data_cached, 10, 1.5, 0.05)
     # accuracy
-    accuracy = accuracy(weights, bias, data)
+    accuracy = accuracy(weights, bias, data_cached)
     print("accuracy:", accuracy)

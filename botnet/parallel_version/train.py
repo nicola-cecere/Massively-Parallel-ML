@@ -20,7 +20,7 @@ def train(RDD_Xy, iterations, learning_rate, lambda_reg):
 
         # Compute gradients
         gradients = RDD_Xy.map(
-            lambda x: compute_gradients(x, broadcast_w.value, broadcast_b.value, m, k)
+            lambda x: compute_gradients(x, broadcast_w.value, broadcast_b.value, k)
         ).reduce(lambda a, b: (a[0] + b[0], a[1] + b[1]))
 
         # Update weights and bias
@@ -31,7 +31,7 @@ def train(RDD_Xy, iterations, learning_rate, lambda_reg):
 
         # Optional: Print cost for monitoring (not recommended for large datasets)
         cost = RDD_Xy.map(
-            lambda x: compute_cost(x, broadcast_w.value, broadcast_b.value, m, k)
+            lambda x: compute_cost(x, broadcast_w.value, broadcast_b.value, k)
         ).reduce(lambda x, y: x + y)
         cost = (-1 / m) * cost
         cost += (lambda_reg / (2 * k)) * np.sum(w**2)
@@ -40,7 +40,7 @@ def train(RDD_Xy, iterations, learning_rate, lambda_reg):
     return w, b
 
 
-def compute_gradients(record, w, b, m, k):
+def compute_gradients(record, w, b, k):
     X, y = record
     z = 0
     for i in range(k):
@@ -48,11 +48,11 @@ def compute_gradients(record, w, b, m, k):
     z += b
     y_hat = 1 / (1 + np.exp(-z))
     dw = (y_hat - y) * X
-    db = np.sum(y_hat - y)
+    db = y_hat - y
     return dw, db
 
 
-def compute_cost(record, w, b, m, k):
+def compute_cost(record, w, b, k):
     X, y = record
     z = 0
     for i in range(k):

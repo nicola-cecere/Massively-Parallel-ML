@@ -29,13 +29,17 @@ if __name__ == "__main__":
     num_blocks_cv = 10
     # Shuffle rows and transfrom data
     data_cv = transform(data, num_blocks_cv)
+    # optimize performance
     data_cv_cached = data_cv.cache()
 
     accuracies = []
     for i in range(num_blocks_cv):
         tr_data, test_data = get_block_data(data_cv_cached, i)
-        weights, bias = train(tr_data, 10, 1.5, 0.05)
-        acc = accuracy(weights, bias, test_data)
+        # optimize performance
+        tr_data_cached = tr_data.cache()
+        test_data_cached = test_data.cache()
+        weights, bias = train(tr_data_cached, 10, 1.5, 0.05)
+        acc = accuracy(weights, bias, test_data_cached)
         accuracies.append(acc)
         print("accuracy:", acc)
         print("------------------------------------------------------")

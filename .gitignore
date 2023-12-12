@@ -166,3 +166,13 @@ botnet/data/
 *.iml
 
 MNIST/data/
+
+data_ok.csv
+
+disks.shuf.1M.csv
+
+esercizi.ipynb
+
+header_disks.txt
+
+quijote.text

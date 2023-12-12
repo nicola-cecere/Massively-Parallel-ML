@@ -46,4 +46,9 @@ def parallelKMeans(X, K, n_iter):
             .collect()
         )
 
+        if len(centroids) < K:
+            centroids = np.concatenate(
+                (centroids, initialize_centroids(X, K - len(centroids)))
+            )
+
     return centroids
