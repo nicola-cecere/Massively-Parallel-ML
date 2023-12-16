@@ -1,11 +1,7 @@
 import random
 
-from pyspark import SparkContext
-
 
 def transform(RDD_Xy, num_blocks):
-    sc = SparkContext.getOrCreate()
-
     # Function to assign a random index to each record
     def add_index(record):
         # Randomly select an index between 0 and num_blocks - 1
