@@ -7,6 +7,7 @@ from accuracy import accuracy
 from get_block_data import get_block_data
 from normalize import normalize
 from preprocess import readFile
+import pyspark
 from pyspark import SparkContext
 from train import train
 from transform import transform
@@ -15,14 +16,20 @@ if __name__ == "__main__":
     os.environ["PYSPARK_PYTHON"] = sys.executable
     os.environ["PYSPARK_DRIVER_PYTHON"] = sys.executable
 
-    sc = SparkContext.getOrCreate()
+    number_cores = 8
+    conf = (
+        pyspark.SparkConf()
+        .setMaster('local[{}]'.format(number_cores))
+    )
+
+    sc = pyspark.SparkContext(conf=conf)
     current_directory = os.getcwd()
-    sc.addPyFile(current_directory + "/botnet/cross_validation/" + "predict.py")
-    sc.addPyFile(current_directory + "/botnet/cross_validation/" + "train.py")
-    sc.addPyFile(current_directory + "/botnet/cross_validation/" + "transform.py")
+    sc.addPyFile(current_directory + "/" + "predict.py")
+    sc.addPyFile(current_directory + "/" + "train.py")
+    sc.addPyFile(current_directory + "/" + "transform.py")
 
     # read data
-    data = readFile("botnet/data/botnet_tot_syn_l.csv")
+    data = readFile("../data/botnet_tot_syn_l.csv")
     # standardize
     data = normalize(data)
 
